@@ -1,4 +1,4 @@
-package Lesson2_OpenClosedPrinciple.TakeHomeTask.BetterCode;
+package Lesson2_OpenClosedPrinciple.TakeHomeTask.BetterCode.Product;
 
 public class ElectronicsType implements ProductType {
     @Override
@@ -10,6 +10,4 @@ public class ElectronicsType implements ProductType {
     public double getDiscountRate() {
         return 0.10;
     }
-
-
 }

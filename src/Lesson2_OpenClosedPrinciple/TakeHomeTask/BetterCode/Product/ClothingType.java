@@ -1,4 +1,4 @@
-package Lesson2_OpenClosedPrinciple.TakeHomeTask.BetterCode;
+package Lesson2_OpenClosedPrinciple.TakeHomeTask.BetterCode.Product;
 
 public class ClothingType implements ProductType{
     @Override
