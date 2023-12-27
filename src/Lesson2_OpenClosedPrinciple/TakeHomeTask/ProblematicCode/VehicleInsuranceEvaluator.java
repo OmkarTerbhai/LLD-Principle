@@ -1,4 +1,4 @@
-package Lesson2_OpenClosedPrinciple.TakeHomeTask;
+package Lesson2_OpenClosedPrinciple.TakeHomeTask.ProblematicCode;
 
 class InsuranceQuote {
 
