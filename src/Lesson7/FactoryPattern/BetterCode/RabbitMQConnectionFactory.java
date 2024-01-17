@@ -1,4 +1,4 @@
-package Lesson7.FactoryPattern;
+package Lesson7.FactoryPattern.BetterCode;
 
 public class RabbitMQConnectionFactory extends AbstractConnectionFactory{
     @Override
