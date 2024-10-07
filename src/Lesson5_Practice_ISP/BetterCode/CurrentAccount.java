@@ -1,6 +1,6 @@
 package Lesson5_Practice_ISP.BetterCode;
 
-public class CurrentAccount implements IAccount, IDeposit{
+public class CurrentAccount implements IDeposit{
     @Override
     public void withdraw() {
         System.out.println("Withdrawing from Current Acc");
