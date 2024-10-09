@@ -2,31 +2,53 @@ package TakeHomeAssignments.ParkingLot;
 
 public class MotorcycleSpot implements ParkingSpot {
 
-    public static int totalSpaces = 50;
-    public int spaceSize;
+    public static final int TOTAL_SPACE = 2;
+    public int usedSpace;
+    private boolean isOccupied;
 
     public MotorcycleSpot() {
-        this.spaceSize = 2;
+        this.usedSpace = 0;
+        this.isOccupied = false;
     }
     @Override
-    public void allocate(Vehicle vehicle) {
-        if(vehicle.getSize() > this.spaceSize) {
-            throw new IllegalArgumentException("Cannot park a large vehicle in a motorcycle spot");
+    public boolean allocate(Vehicle vehicle) {
+        if(isOccupied()) {
+            throw new IllegalArgumentException("Parking spot is occupied");
         }
-        if(vehicle.getSize() >= totalSpaces) {
-            throw new IllegalArgumentException("No vacant spots remaining for parking");
+        if(!hasSpace(vehicle)) {
+            throw new IllegalArgumentException("No space to park vehicle");
         }
-        totalSpaces -= vehicle.getSize();
-        System.out.println("Parking space is available and allocated, please proceed to park your vehicle");
+        usedSpace += vehicle.getSize();
+        if(getRemainingSpace() == 0)
+            isOccupied = true;
+
+        return true;
     }
 
     @Override
-    public void deallocate(Vehicle vehicle) {
-        totalSpaces += vehicle.getSize();
-        System.out.println("Thank you for visiting, have a great day...");
+    public boolean deallocate(Vehicle vehicle) {
+        if(usedSpace >= vehicle.getSize()) {
+            usedSpace -= vehicle.getSize();
+            if(usedSpace == 0)
+                isOccupied = false;
+            return true;
+        }
+        System.out.println("Vehicle not parked here");
+        return false;
     }
 
-    public boolean isFull() {
-        return totalSpaces == 0;
+   @Override
+    public int getRemainingSpace() {
+        return TOTAL_SPACE - usedSpace;
+   }
+
+    @Override
+    public boolean isOccupied() {
+        return isOccupied;
+    }
+
+    @Override
+    public boolean hasSpace(Vehicle vehicle) {
+        return getRemainingSpace() >= vehicle.getSize();
     }
 }

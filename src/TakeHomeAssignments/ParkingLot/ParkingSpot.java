@@ -1,7 +1,12 @@
 package TakeHomeAssignments.ParkingLot;
 
 public interface ParkingSpot {
-    void allocate(Vehicle vehicle);
-    void deallocate(Vehicle vehicle);
-    boolean isFull();
+    boolean allocate(Vehicle vehicle);
+    boolean deallocate(Vehicle vehicle);
+
+    int getRemainingSpace();
+
+    boolean isOccupied();
+
+    boolean hasSpace(Vehicle vehicle);
 }
