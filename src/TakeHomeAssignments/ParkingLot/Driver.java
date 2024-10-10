@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 public class Driver {
 
-    static List<ParkingSpot> motorcycleSpots = new ArrayList<>();
-    static List<ParkingSpot> carSpots = new ArrayList<>();
-    static List<ParkingSpot> truckSpots = new ArrayList<>();
+    private static final List<ParkingSpot> motorcycleSpots = new ArrayList<>();
+    private static final List<ParkingSpot> carSpots = new ArrayList<>();
+    private static final List<ParkingSpot> truckSpots = new ArrayList<>();
 
     public Driver(int motorCycleSpotsNum, int carSpotsNum, int truckSpotsNum) {
         for(int i = 1; i <= motorCycleSpotsNum; i++) {

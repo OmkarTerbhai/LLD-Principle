@@ -2,7 +2,7 @@ package TakeHomeAssignments.ParkingLot;
 
 public class MotorcycleSpot implements ParkingSpot {
 
-    public static final int TOTAL_SPACE = 2;
+    private static final int TOTAL_SPACE = 2;
     public int usedSpace;
     private boolean isOccupied;
 
