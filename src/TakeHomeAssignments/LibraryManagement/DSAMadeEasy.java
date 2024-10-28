@@ -12,11 +12,12 @@ public class DSAMadeEasy extends Book {
     static int copiesAvailable = 100;
     static Queue<User> reservations = new LinkedList<>();
     private static final int overdueCost = 50;
-    public DSAMadeEasy() {
+    public DSAMadeEasy(int copies) {
         this.author = "Narsimha Kurumanchi";
         this.title = "Data Structures and Algorithms Made Easy";
         this.genre = BookGenre.NON_FICTION;
         this.ISBN = UUID.randomUUID().toString();
+        copiesAvailable = copies;
     }
 
     @Override
@@ -25,10 +26,14 @@ public class DSAMadeEasy extends Book {
             System.out.println("No user to allocate");
             return;
         }
+        if(userId.getBook() != null && userId.getBook().equals(this)) {
+            System.out.println("You already have this book");
+            return;
+        }
         if(copiesAvailable == 0) {
             System.out.println("Sorry, No copies are available");
             System.out.println("Adding you to the waiting queue");
-            this.reserve(userId);
+            userId.reserveBook(this);
             return;
         }
         this.userId = userId;
@@ -54,8 +59,13 @@ public class DSAMadeEasy extends Book {
     @Override
     protected void reserve(User userId) {
         if(userId != null) {
-            reservations.add(userId);
-            System.out.println("You have been added to the Queue");
+            if(reservations.contains(userId)) {
+                System.out.println("You are already added in Queue " + this.title);
+            }
+            else {
+                reservations.add(userId);
+                System.out.println("You have been added to the Queue");
+            }
         }
     }
 
@@ -69,5 +79,19 @@ public class DSAMadeEasy extends Book {
         else {
             System.out.println("Sorry, we don't have enough copies yet!");
         }
+    }
+
+    @Override
+    protected void isOverdue() {
+        if(Duration.between(this.borrowDate, LocalDate.now()).toDays() > 15) {
+            userId.processOverdueNotification();
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this != o) return false;
+        Book b = (Book) o;
+        return this.title.equals(b.title);
     }
 }

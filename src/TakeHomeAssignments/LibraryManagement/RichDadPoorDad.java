@@ -3,6 +3,7 @@ package TakeHomeAssignments.LibraryManagement;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -12,24 +13,31 @@ public class RichDadPoorDad extends Book{
     private static final int overdueCost = 50;
 
     static Queue<User> reservations = new LinkedList<>();
-    public RichDadPoorDad() {
+    public RichDadPoorDad(int copies) {
         this.title = "Rich Dad Poor Dad";
         this.author = "Robert Kiyosaki";
         this.ISBN = UUID.randomUUID().toString();
         this.genre = BookGenre.NON_FICTION;
+        copiesAvailable = copies;
     }
     @Override
     protected void allocate(User userId) {
         if(userId == null) {
             System.out.println("No user to allocate");
+            return;
+        }
+        if(userId.getBook() != null && userId.getBook().equals(this)) {
+            System.out.println("You already have this book");
+            return;
         }
         if(copiesAvailable == 0) {
             System.out.println("Sorry, No copies are available");
             System.out.println("Adding you to the waiting queue");
-            this.reserve(userId);
+            userId.reserveBook(this);
             return;
         }
-        this.userId = new LibraryUser();
+        this.userId = userId;
+        userId.borrowBook(this);
         copiesAvailable--;
         System.out.println("A great book about Personal Finance! Happy Reading!");
     }
@@ -52,8 +60,13 @@ public class RichDadPoorDad extends Book{
     @Override
     protected void reserve(User userId) {
         if(userId != null) {
-            reservations.add(userId);
-            System.out.println("You have been added to the Queue");
+            if(reservations.contains(userId)) {
+                System.out.println("You are already added in Queue " + this.title);
+            }
+            else {
+                reservations.add(userId);
+                System.out.println("You have been added to the Queue");
+            }
         }
     }
 
@@ -66,6 +79,20 @@ public class RichDadPoorDad extends Book{
         }
         else {
             System.out.println("Sorry, we don't have enough copies yet!");
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this != o) return false;
+        Book b = (Book) o;
+        return this.title.equals(b.title);
+    }
+
+    @Override
+    protected void isOverdue() {
+        if(Duration.between(this.borrowDate, LocalDate.now()).toDays() > 15) {
+            userId.processOverdueNotification();
         }
     }
 }

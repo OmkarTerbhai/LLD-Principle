@@ -6,4 +6,9 @@ public interface User {
 
     public void borrowBook(Book b);
 
+    public void reserveBook(Book b);
+
+    public void returnBook();
+
+    public Book getBook();
 }

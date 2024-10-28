@@ -17,4 +17,6 @@ public abstract class Book {
     protected abstract void reserve(User userId);
 
     protected abstract void allocateFromQueue();
+
+    protected abstract void isOverdue();
 }
