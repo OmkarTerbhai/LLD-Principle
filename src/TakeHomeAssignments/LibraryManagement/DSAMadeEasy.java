@@ -6,22 +6,24 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
-public class RichDadPoorDad extends Book{
+public class DSAMadeEasy extends Book {
+
     User userId;
     static int copiesAvailable = 100;
-    private static final int overdueCost = 50;
-
     static Queue<User> reservations = new LinkedList<>();
-    public RichDadPoorDad() {
-        this.title = "Rich Dad Poor Dad";
-        this.author = "Robert Kiyosaki";
-        this.ISBN = UUID.randomUUID().toString();
+    private static final int overdueCost = 50;
+    public DSAMadeEasy() {
+        this.author = "Narsimha Kurumanchi";
+        this.title = "Data Structures and Algorithms Made Easy";
         this.genre = BookGenre.NON_FICTION;
+        this.ISBN = UUID.randomUUID().toString();
     }
+
     @Override
     protected void allocate(User userId) {
         if(userId == null) {
             System.out.println("No user to allocate");
+            return;
         }
         if(copiesAvailable == 0) {
             System.out.println("Sorry, No copies are available");
@@ -29,9 +31,9 @@ public class RichDadPoorDad extends Book{
             this.reserve(userId);
             return;
         }
-        this.userId = new LibraryUser();
+        this.userId = userId;
+        userId.borrowBook(this);
         copiesAvailable--;
-        System.out.println("A great book about Personal Finance! Happy Reading!");
     }
 
     @Override

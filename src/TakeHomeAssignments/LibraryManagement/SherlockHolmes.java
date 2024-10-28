@@ -1,36 +1,71 @@
 package TakeHomeAssignments.LibraryManagement;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
 public class SherlockHolmes extends Book {
-    String userId;
-    Queue<String> reservations;
+    User userId;
+    static int copiesAvailable = 100;
+    private static final int overdueCost = 50;
+    static Queue<User> reservations = new LinkedList<>();
     public SherlockHolmes() {
         this.author = "Arthur Conyan Doyle";
         this.title = "Sherlock Holmes";
         this.genre = BookGenre.FICTION;
         this.ISBN = UUID.randomUUID().toString();
-        this.copiesAvailable = 50;
-        userId = "";
     }
     @Override
-    protected void allocate(String userId) {
+    protected void allocate(User userId) {
         if(userId == null) {
             System.out.println("No user to allocate");
         }
+        if(copiesAvailable == 0) {
+            System.out.println("Sorry, No copies are available");
+            System.out.println("Adding you to the waiting queue");
+            this.reserve(userId);
+            return;
+        }
         this.userId = userId;
+        this.borrowDate = LocalDate.now();
         copiesAvailable--;
     }
 
     @Override
     protected void deallocate() {
-        this.userId = "";
-        this.copiesAvailable++;
+        if(LocalDate.now().isBefore(this.borrowDate.plusDays(11))) {
+            System.out.println("Thank you for returning in due time, hope you had a good read!");
+        }
+        else {
+            System.out.println("Thank you for returning but you past the due date");
+            long daysBetween = ChronoUnit.DAYS.between(this.borrowDate, LocalDate.now());
+            long overdueFees = overdueCost * daysBetween;
+            System.out.println("Please pay overdue fees: " + overdueFees);
+        }
+        this.userId = null;
+        copiesAvailable++;
     }
 
     @Override
-    protected void reserve(String userId) {
+    protected void reserve(User userId) {
+        if(userId != null) {
+            reservations.add(userId);
+            System.out.println("You have been added to the Queue");
+        }
+    }
 
+    @Override
+    protected void allocateFromQueue() {
+        System.out.println("Thank you being in the queue...");
+        if(copiesAvailable > 0) {
+            this.userId = reservations.poll();
+            allocate(userId);
+            System.out.println("Book has been allocated to you...");
+        }
+        else {
+            System.out.println("Sorry, we don't have enough copies yet!");
+        }
     }
 }
