@@ -1,7 +1,7 @@
 package TakeHomeAssignments.LibraryManagement;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class SherlockHolmes extends Book {
         }
         else {
             System.out.println("Thank you for returning but you past the due date");
-            long daysBetween = ChronoUnit.DAYS.between(this.borrowDate, LocalDate.now());
+            long daysBetween = Duration.between(this.borrowDate, LocalDate.now()).toDays();
             long overdueFees = overdueCost * daysBetween;
             System.out.println("Please pay overdue fees: " + overdueFees);
         }
